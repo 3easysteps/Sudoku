@@ -24,9 +24,12 @@ namespace Sudoku.Layout
 
         internal Vector2Int size = Vector2Int.one * 9;
 
-        public int hintsPerBlock = 2;
+        public const int maxHintsPerPuzzle = 30;
+        public const int minHintsPerPuzzle = 17;
 
         public bool LevelReady { get; internal set; }
+
+        public LayoutGenerator layoutGenerator;
 
         private void Start()
         {
@@ -43,6 +46,10 @@ namespace Sudoku.Layout
 
             while (grid.GetLength(0) < size.x)
                 yield return null;
+
+            layoutGenerator.Generate(seed);
+
+            yield return new WaitUntil(() => layoutGenerator.done);
 
             PopulatePuzzle();
 
@@ -94,75 +101,31 @@ namespace Sudoku.Layout
         /// </summary>
         private void PopulatePuzzle()
         {
-            // Create some temporary veriables so we can loop around the grid
-            int startX = 0;
-            int startY = 0;
+            // Create a random hint value
+            var hintsThisPuzzle = random.Next(minHintsPerPuzzle, maxHintsPerPuzzle);
 
-            // Loop through the layout objects
-            foreach (var layoutObject in layoutObjects)
+            // Place all the objects, and decide wether or not it is a hint
+            for (int x = 0; x < size.x; x++)
             {
-                int hintsThisBlock = 0;
-
-                var validDigits = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-
-                // Create a button for each point on this layout object
-                for (int x = startX; x < startX + (size.x / 3); x++)
+                for (int y = 0; y < size.y; y++)
                 {
-                    for (int y = startY; y < startY + (size.y / 3); y++)
-                    {
-                        // Generate a number here
-                        var number = validDigits[random.Next(0, validDigits.Count)]; // Get one from the valid digits.
-                        var numbersTakenHorizontally = ScanHorizontal(y); // Get the horizontal number that have already been placed
-                        var numbersTakenVertically = ScanVertical(x); // Get the vertical number that have already been placed
-                        var cellNumbers = CheckCell(layoutObject);
+                    bool hide = random.Next(-81, 25) < -1 || hintsThisPuzzle <= 0;
 
-                        // Check if we have already tried placing this number in this column/row/cell
-                        bool takenX = numbersTakenHorizontally.Contains(number);
-                        bool takenY = numbersTakenHorizontally.Contains(number);
-                        bool takenCell = cellNumbers.Contains(number);
+                    grid[x, y].SetValue(layoutGenerator.grid[x, y], hide);
 
-                        if (takenX || takenY || takenCell)
-                        {
-                            var possibleDigits = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-
-                            // Adjust accordingly
-                            int val = -1;
-
-                            foreach (var item in numbersTakenHorizontally)
-                                possibleDigits.Remove(item);
-
-                            foreach (var item in numbersTakenVertically)
-                                possibleDigits.Remove(item);
-
-                            foreach (var item in cellNumbers)
-                                possibleDigits.Remove(item);
-
-                            val = possibleDigits.FirstOrDefault();
-
-                            number = val;
-                        }
-
-                        bool hide = random.Next(0, 100) > 50 / (hintsThisBlock + 1);
-
-                        grid[x, y].SetValue(number, hide);
-
-                        if (hintsThisBlock <= hintsPerBlock && hide == false)
-                            hintsThisBlock++;
-
-                        validDigits.Remove(number);
-                    }
-                }
-
-                // Loop around the grid
-                startX += size.x / 3;
-                if (startX >= size.x)
-                {
-                    startX = 0;
-                    startY += size.y / 3;
+                    if (hide == false)
+                        hintsThisPuzzle--;
                 }
             }
         }
 
+        /// <summary>
+        /// Checks to see if a tile is valid.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns>Will return true if valid.</returns>
         public bool Valid(int value, int x, int y)
         {
             int containingCount = 0;
