@@ -61,6 +61,11 @@ namespace Sudoku.UI
                     if (layoutObject != null)
                     {
                         indexHolding = layoutObject.value;
+
+                        if (!layoutObject.set)
+                        {
+                            layoutObject.value = 0;
+                        }
                     }
 
                     var digit = highlighting.GetComponent<Digit>();
