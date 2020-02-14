@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Sudoku.UI;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,16 +12,25 @@ namespace Sudoku.Layout
         internal bool notConflicting;
         internal bool set;
 
+        [Tooltip("This object will display the color.")]
+        public Graphic ColorDisplay;
+
+        // These are separate so you can use either the text or the background graphic.
+
+        [Tooltip("This object will display the current digit.")]
         public Text textObject;
 
         public Color PlayerPlaced = Color.gray,
             Correct = Color.green,
             Wrong = Color.red,
-            Placed = Color.black;
+            HighLight = Color.cyan;
+
+        internal bool highLighting = false;
 
         public int value = 0;
 
         // You could use this to give the user a hint if need be
+        [HideInInspector]
         public int trueValue = 0;
 
         [HideInInspector]
@@ -44,11 +54,11 @@ namespace Sudoku.Layout
 
             if (notConflicting)
             {
-                textObject.color = Correct;
+                ColorDisplay.color = highLighting ? HighLight : (set ? Correct : PlayerPlaced);
             }
             else
             {
-                textObject.color = Wrong;
+                ColorDisplay.color = Wrong;
             }
 
             if (set) return;
@@ -69,9 +79,15 @@ namespace Sudoku.Layout
                 value = trueValue;
             }
 
-            textObject.color = Placed;
+            ColorDisplay.color = Correct;
 
             textObject.text = value > 0 ? value.ToString() : "";
+        }
+
+        public void GetDigit()
+        {
+            if (!set)
+                value = DigitMovementManager.indexHolding;
         }
     }
 }

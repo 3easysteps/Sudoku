@@ -131,6 +131,19 @@ namespace Sudoku.Layout
             }
         }
 
+        public void HighLightTilesWithDigit(int digit)
+        {
+            foreach (var item in grid)
+            {
+                item.highLighting = false;
+
+                if (item.value == digit && digit != 0)
+                {
+                    item.highLighting = true;
+                }
+            }
+        }
+
         /// <summary>
         /// Checks to see if a tile is valid.
         /// </summary>

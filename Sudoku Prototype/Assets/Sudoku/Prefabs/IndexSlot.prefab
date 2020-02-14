@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1495644083227184496}
   - component: {fileID: 4451738995367848101}
   - component: {fileID: 3692062086435823037}
-  - component: {fileID: 2841918914592817052}
   - component: {fileID: 747882651391974530}
+  - component: {fileID: 6092549910788241607}
   m_Layer: 5
   m_Name: IndexSlot
   m_TagString: Untagged
@@ -77,7 +77,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
---- !u!114 &2841918914592817052
+--- !u!114 &747882651391974530
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,7 +86,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 3395762832601680002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b031188061ff364e9b537fa9487d282, type: 3}
+  m_Script: {fileID: 11500000, guid: a643bc47a49059f40b032c1e37c06ac5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ColorDisplay: {fileID: 3814187591703740737}
+  textObject: {fileID: 3814187591703740737}
+  PlayerPlaced: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  Correct: {r: 0, g: 0, b: 0, a: 1}
+  Wrong: {r: 1, g: 0, b: 0, a: 1}
+  HighLight: {r: 0, g: 1, b: 1, a: 1}
+  value: 0
+  trueValue: 0
+  index: {x: 0, y: 0}
+--- !u!114 &6092549910788241607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3395762832601680002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -119,29 +140,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3692062086435823037}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 747882651391974530}
+        m_MethodName: GetDigit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &747882651391974530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3395762832601680002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a643bc47a49059f40b032c1e37c06ac5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textObject: {fileID: 3814187591703740737}
-  PlayerPlaced: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  Correct: {r: 0, g: 0, b: 0, a: 1}
-  Wrong: {r: 1, g: 0, b: 0, a: 1}
-  Placed: {r: 0, g: 0, b: 0, a: 1}
-  value: 0
-  trueValue: 0
-  index: {x: 0, y: 0}
 --- !u!1 &4492307058006925109
 GameObject:
   m_ObjectHideFlags: 0
